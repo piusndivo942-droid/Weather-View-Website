@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather View</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="weather.css">
+</head>
+<body id="app" class="rain">
+    <!-- Animated background blobs -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div> 
+
+
+    <main class="container">
+        <header class="app-header">
+            <div class="brand">
+                <i class="fa-solid fa-cloud-sun brand-icon"></i>
+                <span class="brand-name">WeatherView</span>
+            </div>
+            <button id="refresh-btn" class="icon-btn" title="Refresh weather"  aria-label="Refresh weather">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </button>
+        </header>
+
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="city-input" class="search-input"  placeholder="Search city and country eg. UK, KE...">
+            </div>
+            <button id="search-btn" class="search-button" >Search</button>
+        </section>
+
+        <!-- Loading Spinner -->
+        <div id="loader" class="loader hidden">
+            <div class="spinner"></div>
+            <p>Fetching weather…</p>
+        </div>
+
+        <!-- Weather Results -->
+        <section id="weather-data" class="weather-data hidden">
+
+            <!-- Priority Card -->
+            <div class="priority-card" id="priority-card">
+                <div class="priority-bg" id="priority-bg"></div>
+                <div class="priority-left">
+                    <p id="city-name" class="priority-city">City Name</p>
+                    <p id="condition" class="priority-condition"></p>
+                    <p id="temperature" class="priority-temp"></p>
+                    <p id="feels-like" class="priority-feels"></p>
+                </div>
+                <div class="priority-right">
+                    <img id="weather-icon" src="" alt="weather icon" class="priority-icon">
+                    <p id="date-time" class="priority-date"></p>
+                </div>
+            </div>
+
+            <!-- Advise section -->
+            <div id="advisee" class="advisee hidden">
+                <i id="advisee-icon" class="advisee-icon"></i>
+                <p id="advisee-text" class="advisee-text"></p>
+            </div>
+
+            <!-- Weather Stats -->
+            <div class="weather-stats">
+                <div class="weather-item">
+                    <div class="item-icon-wrap teal">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <div class="stat-text">
+                        <span class="label">Humidity</span>
+                        <p id="humidity" class="value"></p>
+                    </div>
+                </div>
+
+                <div class="weather-item">
+                    <div class="item-icon-wrap blue">
+                        <i class="fa-solid fa-wind"></i>
+                    </div>
+                    <div class="stat-text">
+                        <span class="label">Wind Speed</span>
+                        <p id="wind-speed" class="value"></p>
+                    </div>
+                </div>
+
+                <div class="weather-item">
+                    <div class="item-icon-wrap purple">
+                        <i class="fa-solid fa-cloud"></i>
+                    </div>
+                    <div class="stat-text">
+                        <span class="label">Cloud Cover</span>
+                        <p id="rain-chance" class="value"></p>
+                    </div>
+                </div>
+
+                <div class="weather-item">
+                    <div class="item-icon-wrap orange">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <div class="stat-text">
+                        <span class="label">Visibility</span>
+                        <p id="visibility" class="value"></p>
+                    </div>
+                </div>
+            </div>
+
+            
+                <!-- Forecast link -->
+            <div class="forecast-link">
+                <button id="forecast-btn" class="forecast-btn">
+                    <i class="fa-solid fa-calendar-days"></i> 5-Day View
+                    <i class="fa-solid fa-chevron-down chevron-icon"></i>
+                </button>
+                
+            </div>
+
+            <!-- Forecast Section -->
+            <section id="forecast-section" class="forecast-section hidden">
+                <div class="forecast-header">
+                    <h3 class="section-name">
+                        <i class="fa-solid fa-calendar"></i> 5-Day View
+                    </h3>
+                </div>
+                <div id="forecast" class="forecast-box">
+                    <!-- Forecast display, for the 5-day -->
+                </div>
+            </section>
+            
+            <div class="forecast-link">
+                <button id="hourly-btn" class="forecast-btn">
+                   <i class="fa-solid fa-clock"></i> Hourly View
+                    <i class="fa-solid fa-chevron-down chevron-icon"></i>
+                </button>
+            </div>
+
+             <!-- Hour section -->
+            <div  id="hourly-section" class="hourly-section hidden">
+                <h3 class="section-name">
+                    <i class="fa-solid fa-clock"></i> Hourly Forecast
+                </h3>
+                <section id="hour-container" class="hour-container"></section>
+            </div>             
+        </section>
+    </main>
+
+    <script src="weather.js"></script>
+</body>
+</html>
