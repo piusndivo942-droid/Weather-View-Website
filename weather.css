@@ -78,9 +78,7 @@ body {
     to   { transform: translate(30px, 20px) scale(1.08); }
 }
 
-/* ============================================================
-   Container
-============================================================ */
+/* Container  */
 .container {
     position: relative;
     z-index: 1;
@@ -94,10 +92,38 @@ body {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
+/* location error  */
+.location-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 16px;
+    background: var(--stat-bg);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    animation: fadeUp 0.45s ease;
+}
 
-/* ============================================================
-   Header
-============================================================ */
+.location-error i {
+    font-size: 32px;
+    color: #fbbf24;
+}
+
+.location-error p {
+    color: var(--text-primary);
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+}
+
+.location-hint {
+    color: var(--text-secondary) !important;
+    font-size: 12px !important;
+}
+
+/*  header section*/
 .app-header {
     display: flex;
     justify-content: space-between;
