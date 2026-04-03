@@ -285,8 +285,6 @@ window.addEventListener("load", async () => {
         if (location) {
             await getWeatherForCoords(location.lat, location.lon);
         } else {
-            // Don't fallback to default city - show location error and wait for user to search
-            // The error is already shown by getUserLocation()
             loadFn(false);
             return;
         }
