@@ -266,11 +266,16 @@ window.addEventListener("load", async () => {
             await getWeatherForCoords(location.lat, location.lon);
         } else {
             // Fallback to default city => Nairobi
-            await getWeatherForCity("Nairobi");
+            alert("Location access denied or unavailable. Please enter your city manually.");
+            weatherDetails.classList.add("hidden");
+            cityInput.focus();
         }
     } catch (err) {
         console.error("Initial load error:", err);
-        await getWeatherForCity("Nairobi");
+        alert("Unable to detect location. Please enter your city manually.");
+        weatherDetails.classList.add("hidden");
+        cityInput.focus();
+        
     } finally {
         loadFn(false);
     }
