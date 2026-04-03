@@ -12,6 +12,8 @@ const forecastSection = document.getElementById("forecast-section");
 const hourlySection = document.getElementById("hourly-section");
 const weatherDetails = document.getElementById("weather-data");
 const loader = document.getElementById("loader");
+const locationError = document.getElementById("location-error");
+const locationErrorText = document.getElementById("location-error-text");
 
 const cityName = document.getElementById("city-name");
 const temperature = document.getElementById("temperature");
@@ -45,14 +47,12 @@ function loadFn(active) {
     }
 }
 
-//function for location error
 function showLocationError(message) {
     loader.classList.add("hidden");
     weatherDetails.classList.add("hidden");
     locationError.classList.remove("hidden");
     locationErrorText.textContent = message;
 }
-
 
 //search button event 
 searchBtn.addEventListener("click", () => {
@@ -151,8 +151,6 @@ function displayWeatherDataFn(data, coords = null) {
         currentCity = data.name;
         currentCoords = null;
     }
-    
-
 
     weatherDetails.classList.remove("hidden");
     
@@ -212,8 +210,8 @@ async function getWeatherForCity(city) {
             throw new Error(data.message || "Unable to fetch weather data");
         }
 
-         locationError.classList.add("hidden");
-         displayWeatherDataFn(data);
+        locationError.classList.add("hidden");
+        displayWeatherDataFn(data);
     } catch (err) {
         alert(err.message);
     } finally {
@@ -287,13 +285,14 @@ window.addEventListener("load", async () => {
         if (location) {
             await getWeatherForCoords(location.lat, location.lon);
         } else {
+            // Don't fallback to default city - show location error and wait for user to search
+            // The error is already shown by getUserLocation()
             loadFn(false);
             return;
         }
     } catch (err) {
         console.error("Initial load error:", err);
         showLocationError("Unable to fetch weather data. Please search for a city.");
-        
     } finally {
         loadFn(false);
     }
