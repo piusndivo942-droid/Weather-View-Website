@@ -39,11 +39,20 @@ function loadFn(active) {
     if (active) {
         loader.classList.remove("hidden");
         weatherDetails.classList.add("hidden");
+        locationError.classList.add("hidden");
     } else {
         loader.classList.add("hidden");
-        weatherDetails.classList.remove("hidden");
     }
 }
+
+//function for location error
+function showLocationError(message) {
+    loader.classList.add("hidden");
+    weatherDetails.classList.add("hidden");
+    locationError.classList.remove("hidden");
+    locationErrorText.textContent = message;
+}
+
 
 //search button event 
 searchBtn.addEventListener("click", () => {
@@ -142,7 +151,10 @@ function displayWeatherDataFn(data, coords = null) {
         currentCity = data.name;
         currentCoords = null;
     }
+    
 
+
+    weatherDetails.classList.remove("hidden");
     
     cityName.textContent = `${data.name}, ${data.sys.country}`
     condition.textContent = data.weather[0].description;
@@ -200,7 +212,8 @@ async function getWeatherForCity(city) {
             throw new Error(data.message || "Unable to fetch weather data");
         }
 
-        displayWeatherDataFn(data);
+         locationError.classList.add("hidden");
+         displayWeatherDataFn(data);
     } catch (err) {
         alert(err.message);
     } finally {
@@ -219,6 +232,7 @@ async function getWeatherForCoords(lat, lon) {
 
         if (!response.ok) throw new Error(data.message);
 
+        locationError.classList.add("hidden");
         displayWeatherDataFn(data, { lat, lon });
     } catch (err) {
         alert("Could not load weather: " + err.message);
@@ -230,7 +244,7 @@ async function getWeatherForCoords(lat, lon) {
 // detecting geolocation from the user
 async function getUserLocation() {
     if (!navigator.geolocation) {
-        console.log("Geolocation not found");
+        showLocationError("Geolocation is not supported by your browser.");
         return null;
     }
 
@@ -243,7 +257,15 @@ async function getUserLocation() {
                 });
             },
             (error) => {
-                console.log("Geolocation error:", error.message);
+                if (error.code === error.PERMISSION_DENIED) {
+                    showLocationError("Location access was denied. Please enable location permission or search for a city.");
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    showLocationError("Location information is unavailable. Please search for a city.");
+                } else if (error.code === error.TIMEOUT) {
+                    showLocationError("Location request timed out. Please search for a city.");
+                } else {
+                    showLocationError("Unable to get your location. Please search for a city.");
+                }
                 resolve(null);
             },
             {
@@ -265,16 +287,12 @@ window.addEventListener("load", async () => {
         if (location) {
             await getWeatherForCoords(location.lat, location.lon);
         } else {
-            // Fallback to default city => Nairobi
-            alert("Location access denied or unavailable. Please enter your city manually.");
-            weatherDetails.classList.add("hidden");
-            cityInput.focus();
+            loadFn(false);
+            return;
         }
     } catch (err) {
         console.error("Initial load error:", err);
-        alert("Unable to detect location. Please enter your city manually.");
-        weatherDetails.classList.add("hidden");
-        cityInput.focus();
+        showLocationError("Unable to fetch weather data. Please search for a city.");
         
     } finally {
         loadFn(false);
